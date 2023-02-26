@@ -5,7 +5,7 @@ import todoSlice from "../features/todoSlice";
 
 const store = configureStore ({
     reducer: {
-        todos: todoSlice
+        UserDto: todoSlice
     }
 })
 
