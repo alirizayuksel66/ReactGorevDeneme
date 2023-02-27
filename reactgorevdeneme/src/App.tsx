@@ -93,7 +93,7 @@ export const MyApp: React.FC<{}> = () => {
             />
             {errors.ulkesi && touched.ulkesi && errors.ulkesi}
             <button type="submit" disabled={isSubmitting}>
-              Submit
+              Ekle
             </button>
           </form>
         )}
