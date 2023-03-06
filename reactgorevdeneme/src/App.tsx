@@ -6,12 +6,12 @@ import {
   Field,
   FieldProps,
   useFormikContext,
-} from 'formik';
+} from 'formik'; import { v4 as uuidv4 } from 'uuid';
+
 import { useState } from 'react';
 import { UserDto } from './UserDto';
 import * as Yup from 'yup';
 import { v4 } from "uuid";
-import { useAppSelector, useAppDispatch } from './store/index';
 
 export const MyApp: React.FC<{}> = () => {
 
@@ -27,19 +27,22 @@ export const MyApp: React.FC<{}> = () => {
       .max(11, 'Numara 11 Haneli Olmalıdır !')
       .required('Bu Alan Boş Bırakılamaz !'),
     ulkesi: Yup.string()
-    .required('Bu Alan Boş Bırakılamaz !')
+      .required('Bu Alan Boş Bırakılamaz !')
   });
-  
+
+  const onDelete = (id: string) => {
+    setUsers(users => users.filter(todo => todo.id != id))
+  }
   return (
     <div>
       <Formik
-        initialValues={{ adi: '', soyadi: '', numarasi: '', ulkesi: '', id: '' }}
+        initialValues={{ adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setTimeout(() => {
             setSubmitting(false);
             /*alert(JSON.stringify(values, null, 2));*/
             console.log(values);
-            resetForm();
+            resetForm({ values: { adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() } });
           }, 500);
           return setUsers((users: UserDto[]) => [...users, values])
         }}
@@ -115,7 +118,7 @@ export const MyApp: React.FC<{}> = () => {
               <td>{todo.soyadi}</td>
               <td>{todo.numarasi}</td>
               <td>{todo.ulkesi}</td>
-              <td><button>Sil</button><button>Düzenle</button></td>
+              <td><button onClick={() => onDelete(todo.id)}>Sil</button><button>Düzenle</button></td>
             </tr>
           )}
         </tbody>
