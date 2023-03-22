@@ -24,7 +24,7 @@ interface UserDto2 {
 export const MyApp: React.FC<{}> = () => {
 
   const [users, setUsers] = useState<UserDto[]>([])
-  const [input, setInput] = useState<UserDto[]>([])
+  //const [input, setInput] = useState<UserDto[]>([])
 
   const Uyarilar = Yup.object().shape({
     adi: Yup.string()
@@ -47,7 +47,6 @@ export const MyApp: React.FC<{}> = () => {
       return users.id == id
     });
     console.log(newEditItem)
-    setUsers(newEditItem?.adi)
   }
   return (
     <div>
