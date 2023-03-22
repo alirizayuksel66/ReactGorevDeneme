@@ -7,15 +7,24 @@ import {
   FieldProps,
   useFormikContext,
 } from 'formik'; import { v4 as uuidv4 } from 'uuid';
-
+import React, { ButtonHTMLAttributes, ChangeEvent, ChangeEventHandler, EventHandler, MouseEventHandler, useEffect } from 'react';
 import { useState } from 'react';
 import { UserDto } from './UserDto';
 import * as Yup from 'yup';
 import { v4 } from "uuid";
 
+interface UserDto2 {
+  adi: string,
+  soyadi: string,
+  numarasi: string,
+  ulkesi: string,
+  id: string
+}
+
 export const MyApp: React.FC<{}> = () => {
 
   const [users, setUsers] = useState<UserDto[]>([])
+  const [input, setInput] = useState<UserDto[]>([])
 
   const Uyarilar = Yup.object().shape({
     adi: Yup.string()
@@ -30,8 +39,15 @@ export const MyApp: React.FC<{}> = () => {
       .required('Bu Alan Boş Bırakılamaz !')
   });
 
-  const onDelete = (id: string) => {
+  const sil = (id: string) => {
     setUsers(users => users.filter(todo => todo.id != id))
+  }
+  const duzenle = (id: string) => {
+    let newEditItem = users.find((users) => {
+      return users.id == id
+    });
+    console.log(newEditItem)
+    setUsers(newEditItem?.adi)
   }
   return (
     <div>
@@ -41,7 +57,7 @@ export const MyApp: React.FC<{}> = () => {
           setTimeout(() => {
             setSubmitting(false);
             /*alert(JSON.stringify(values, null, 2));*/
-            console.log(values);
+            //console.log(values);
             resetForm({ values: { adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() } });
           }, 500);
           return setUsers((users: UserDto[]) => [...users, values])
@@ -118,7 +134,7 @@ export const MyApp: React.FC<{}> = () => {
               <td>{todo.soyadi}</td>
               <td>{todo.numarasi}</td>
               <td>{todo.ulkesi}</td>
-              <td><button onClick={() => onDelete(todo.id)}>Sil</button><button>Düzenle</button></td>
+              <td><button onClick={() => sil(todo.id)}>Sil</button><button onClick={() => duzenle(todo.id)}>Düzenle</button></td>
             </tr>
           )}
         </tbody>
@@ -128,3 +144,7 @@ export const MyApp: React.FC<{}> = () => {
 };
 
 export default MyApp;
+
+function setEditTodoIdx(nBeingEdited: number) {
+  throw new Error('Function not implemented.');
+}
