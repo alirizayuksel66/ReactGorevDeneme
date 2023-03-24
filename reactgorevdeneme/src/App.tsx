@@ -24,7 +24,7 @@ interface UserDto2 {
 export const MyApp: React.FC<{}> = () => {
 
   const [users, setUsers] = useState<UserDto[]>([])
-  //const [input, setInput] = useState<UserDto[]>([])
+  const [input, setInput] = useState<string>()
 
   const Uyarilar = Yup.object().shape({
     adi: Yup.string()
@@ -48,6 +48,7 @@ export const MyApp: React.FC<{}> = () => {
     });
     console.log(newEditItem)
   }
+  
   return (
     <div>
       <Formik
@@ -56,7 +57,6 @@ export const MyApp: React.FC<{}> = () => {
           setTimeout(() => {
             setSubmitting(false);
             /*alert(JSON.stringify(values, null, 2));*/
-            //console.log(values);
             resetForm({ values: { adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() } });
           }, 500);
           return setUsers((users: UserDto[]) => [...users, values])
@@ -71,7 +71,6 @@ export const MyApp: React.FC<{}> = () => {
           handleBlur,
           handleSubmit,
           isSubmitting,
-          /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
             <input
@@ -85,6 +84,7 @@ export const MyApp: React.FC<{}> = () => {
             {errors.adi && touched.adi && errors.adi}
             <input
               type="text"
+              id='ADI'
               name="soyadi"
               onBlur={handleBlur}
               placeholder="Soyadı"
