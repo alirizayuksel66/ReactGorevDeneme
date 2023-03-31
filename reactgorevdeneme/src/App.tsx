@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { UserDto } from './UserDto';
 import * as Yup from 'yup';
 import { v4 } from "uuid";
+import "./modal.css"
 
 interface UserDto2 {
   adi: string,
@@ -25,6 +26,11 @@ export const MyApp: React.FC<{}> = () => {
 
   const [users, setUsers] = useState<UserDto[]>([])
   const [input, setInput] = useState<string>("")
+  const [modal, setModal] = useState(false)
+
+  const toggleModal = () => {
+    setModal(!modal)
+  }
 
   const Uyarilar = Yup.object().shape({
     adi: Yup.string()
@@ -51,76 +57,92 @@ export const MyApp: React.FC<{}> = () => {
       )
     });
     console.log(newEditItem)
+    //setModal(!modal)
   }
 
   return (
     <div>
-      <Formik
-        initialValues={{ adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() }}
-        onSubmit={(values, { setSubmitting, resetForm }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            /*alert(JSON.stringify(values, null, 2));*/
-            resetForm({ values: { adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() } });
-          }, 500);
-          return setUsers((users: UserDto[]) => [...users, values])
-        }}
-        validationSchema={Uyarilar}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="adi"
-              onChange={(e) => handleChange("adi")(e.target.value)}
-              onBlur={handleBlur}
-              placeholder="Adı"
-              value={values.adi}
-            />
-            {errors.adi && touched.adi && errors.adi}
-            <input
-              type="text"
-              id='ADI'
-              name="soyadi"
-              onBlur={handleBlur}
-              placeholder="Soyadı"
-              onChange={(e) => handleChange("soyadi")(e.target.value)}
-              value={values.soyadi}
-            />
-            {errors.soyadi && touched.soyadi && errors.soyadi}
-            <input
-              type="text"
-              name="numarasi"
-              onChange={(e) => handleChange("numarasi")(e.target.value)}
-              onBlur={handleBlur}
-              placeholder="Numarası"
-              value={values.numarasi}
-            />
-            {errors.numarasi && touched.numarasi && errors.numarasi}
-            <input
-              type="text"
-              name="ulkesi"
-              onChange={(e) => handleChange("ulkesi")(e.target.value)}
-              onBlur={handleBlur}
-              placeholder="Ülkesi"
-              value={values.ulkesi}
-            />
-            {errors.ulkesi && touched.ulkesi && errors.ulkesi}
-            <button type="submit" disabled={isSubmitting}>
-              Ekle
-            </button>
-          </form>
-        )}
-      </Formik>
-      <table>
+      <button onClick={toggleModal} className='btn-modal'>Kişi Ekle</button>
+      {modal && (
+        <div className='modal'>
+          <div onClick={toggleModal} className='overlay'></div>
+          <div className='modal-content'>
+            <Formik
+              initialValues={{ adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() }}
+              onSubmit={(values, { setSubmitting, resetForm }) => {
+                setTimeout(() => {
+                  setSubmitting(false);
+                  /*alert(JSON.stringify(values, null, 2));*/
+                  resetForm({ values: { adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() } });
+                  setModal(false)
+                }, 250);
+                return setUsers((users: UserDto[]) => [...users, values])
+              }}
+              validationSchema={Uyarilar}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <label className='label1'>Adınız :</label>
+                  <input
+                    type="text"
+                    name="adi"
+                    onChange={(e) => handleChange("adi")(e.target.value)}
+                    onBlur={handleBlur}
+                    placeholder="Adı"
+                    value={values.adi}
+                  />
+                  {errors.adi && touched.adi && errors.adi}<br/>
+                  <label className='label2'>Soyadınız :</label>
+                  <input
+                    type="text"
+                    id='ADI'
+                    name="soyadi"
+                    onBlur={handleBlur}
+                    placeholder="Soyadı"
+                    onChange={(e) => handleChange("soyadi")(e.target.value)}
+                    value={values.soyadi}
+                  />
+                  {errors.soyadi && touched.soyadi && errors.soyadi}<br/>
+                  <label className='label3'>Numaranız :</label>
+                  <input
+                    type="text"
+                    name="numarasi"
+                    onChange={(e) => handleChange("numarasi")(e.target.value)}
+                    onBlur={handleBlur}
+                    placeholder="Numarası"
+                    value={values.numarasi}
+                  />
+                  {errors.numarasi && touched.numarasi && errors.numarasi}<br/>
+                  <label className='label4'>Ülke :</label>
+                  <input
+                    type="text"
+                    name="ulkesi"
+                    onChange={(e) => handleChange("ulkesi")(e.target.value)}
+                    onBlur={handleBlur}
+                    placeholder="Ülkesi"
+                    value={values.ulkesi}
+                  />
+                  {errors.ulkesi && touched.ulkesi && errors.ulkesi}<br/>
+                  <button type="submit" disabled={isSubmitting}>
+                    Ekle
+                  </button>
+                  <button onClick={toggleModal} className='close-modal' >X</button>
+                </form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      )}
+
+      <table className='table'>
         <thead>
           <tr>
             <th>Adı</th>
