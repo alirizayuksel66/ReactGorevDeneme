@@ -1,18 +1,11 @@
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-  useFormikContext,
-} from 'formik'; import { v4 as uuidv4 } from 'uuid';
-import React, { ButtonHTMLAttributes, ChangeEvent, ChangeEventHandler, EventHandler, MouseEventHandler, useEffect } from 'react';
+import { Formik } from 'formik';
+import { v4 as uuidv4 } from 'uuid';
+import React from 'react';
 import { useState } from 'react';
 import { UserDto } from './UserDto';
 import * as Yup from 'yup';
 import { v4 } from "uuid";
-import "./modal.css"
+import "./modal.css";
 
 interface UserDto2 {
   adi: string,
@@ -67,6 +60,8 @@ export const MyApp: React.FC<{}> = () => {
         <div className='modal'>
           <div onClick={toggleModal} className='overlay'></div>
           <div className='modal-content'>
+            <h3>Kişi Ekleyiniz</h3>
+            <hr />
             <Formik
               initialValues={{ adi: '', soyadi: '', numarasi: '', ulkesi: '', id: uuidv4() }}
               onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -130,7 +125,7 @@ export const MyApp: React.FC<{}> = () => {
                     placeholder="Ülkesi"
                     value={values.ulkesi}
                   />
-                  {errors.ulkesi && touched.ulkesi && errors.ulkesi}<br/>
+                  {errors.ulkesi && touched.ulkesi && errors.ulkesi}<br/><br />
                   <button type="submit" disabled={isSubmitting}>
                     Ekle
                   </button>
